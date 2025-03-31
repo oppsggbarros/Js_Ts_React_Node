@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="text"] {
+        width: 200px;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 5px 10px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        width: 200px;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        
+    }
+</style>
+
+<body>
+
+    <h1>Cadastro</h1>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" placeholder="Digite seu nome">
+    <br><br>
+
+    <button id="cadastrar">Cadastrar</button>
+    <button id="exibir">Exibir</button>
+    <div id="resultado"></div>
+
+
+
+    
+    <script>
+        
+        let cadastro = [];
+        function cadastrar() {
+            
+            let nome = document.getElementById("nome").value;
+            
+            let objeto = { nome: nome };
+            
+            cadastro.push(objeto);
+            
+            document.getElementById("nome").value = "";
+            
+            console.log(cadastro);
+        }
+        
+        document.getElementById("cadastrar").addEventListener("click", cadastrar);
+        
+        function exibir() {
+            
+            let tabela = "<table border='1'><tr><th>Nome</th></tr>";
+            
+            for (let i = 0; i < cadastro.length; i++) {
+                tabela += "<tr><td>" + cadastro[i].nome + "</td></tr>";
+            }
+            tabela += "</table>";
+            
+            document.getElementById("resultado").innerHTML = tabela;
+        }        
+        document.getElementById("exibir").addEventListener("click", exibir);
+    </script>
+    
+</body>
+</html>
