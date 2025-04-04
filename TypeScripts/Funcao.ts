@@ -17,3 +17,4 @@ function somaComParametroOpcionais(a: number, b?: number): number {
     }
     return a;
 }
+console.log(somaComParametroOpcionais(1,3));
