@@ -35,6 +35,9 @@
     <div class="container">
         <div class="saudacao-container"></div>
     </div>
+    <br>
+
+    <div class="contador-container"></div>
     <script>
         function renderizarSaudacao(nome, containerId) {
             const container = document.querySelector(containerId);
@@ -42,6 +45,12 @@
         }
 
         renderizarSaudacao('Joao', 'saudacao-container');
+
+
+        let contador = 0;
+        const contadorValor = document.querySelector('.contador-container');
+        const atualizarContador = () => contadorValor.textContent = contador;
+        document.querySelector('contador-incrementar')
     </script>
 </body>
 </html>

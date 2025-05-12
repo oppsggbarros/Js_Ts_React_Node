@@ -16,10 +16,22 @@
         function Saudacao ({ nome }) {
             return <h1>Olá, {nome}!</h1>;
         }
+        function Contador() {
+            const [contador, setContador] = useState(0);
+
+            return (
+                <div>
+                    <h2>Contador: {contador}</h2>
+                    <button onClick={() => setContador(contador + 1)}>+1</button>
+                    <button onClick={() => setContador(contador - 1)}>-1</button>
+                </div>
+            );
+        }
         function App() {
             return (
                 <div className="container">
                     <Saudacao nome="João" />
+                    <Contador/>
                 </div>
             )
         }
