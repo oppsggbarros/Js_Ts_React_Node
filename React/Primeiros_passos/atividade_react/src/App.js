@@ -83,19 +83,227 @@
 
 // export default App;
 
-import React from 'react';
-import PerfilUsuario from './components/PerfilUsuario.jsx';
+// import React from 'react';
+// import PerfilUsuario from './components/PerfilUsuario.jsx';
 
-function App() {
+// function App() {
+//   return (
+//     <div>
+//       <PerfilUsuario
+//         imagem="https://media.discordapp.net/attachments/1222734760288190477/1258485304537518150/IMG-20230410-WA0000.jpg?ex=68360046&is=6834aec6&hm=d7b9b0fddb28d2488af998c7ead4755ce15b91a150377e564004367aefa2bbd4&=&format=webp"
+//         nome="Gabriel Gravena"
+//         bio="Desenvolvedor."
+//       />
+//     </div>
+//   );
+// }
+
+// export default App;
+
+// import React, { useState } from 'react';
+
+// function Contador() {
+//   // Inicializa o estado com valor 0
+//   const [contador, setContador] = useState(0);
+
+//   // Função para incrementar o contador
+//   const incrementar = () => {
+//     setContador(contador + 1);
+//   };
+
+//   // Função para zerar o contador
+//   const zerar = () => {
+//     setContador(0);
+//   };
+
+//   return (
+//     <div style={{
+//       textAlign: 'center',
+//       margin: '20px',
+//       padding: '20px',
+//       border: '1px solid #ddd',
+//       borderRadius: '8px',
+//       maxWidth: '300px'
+//     }}>
+//       <h2>Contador: {contador}</h2>
+//       <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+//         <button
+//           onClick={incrementar}
+//           style={{
+//             padding: '8px 16px',
+//             backgroundColor: '#4CAF50',
+//             color: 'white',
+//             border: 'none',
+//             borderRadius: '4px',
+//             cursor: 'pointer'
+//           }}
+//         >
+//           Incrementar
+//         </button>
+//         <button
+//           onClick={zerar}
+//           style={{
+//             padding: '8px 16px',
+//             backgroundColor: '#f44336',
+//             color: 'white',
+//             border: 'none',
+//             borderRadius: '4px',
+//             cursor: 'pointer'
+//           }}
+//         >
+//           Zerar
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Contador;
+
+
+import React, { useState, useEffect, useRef } from 'react';
+
+function BlocoNotas() {
+  // Estado para armazenar a lista de notas
+  const [notas, setNotas] = useState([]);
+  // Estado para controlar o input atual
+  const [novaNota, setNovaNota] = useState('');
+  // Ref para focar no input
+  const inputRef = useRef(null);
+
+  // Carrega notas do localStorage quando o componente monta
+  useEffect(() => {
+    const notasSalvas = localStorage.getItem('notas');
+    if (notasSalvas) {
+      setNotas(JSON.parse(notasSalvas));
+    }
+    // Foca no input após carregar
+    inputRef.current.focus();
+  }, []);
+
+  // Salva notas no localStorage sempre que elas mudam
+  useEffect(() => {
+    localStorage.setItem('notas', JSON.stringify(notas));
+  }, [notas]);
+
+  // Adiciona uma nova nota
+  const adicionarNota = () => {
+    if (novaNota.trim()) {
+      setNotas([...notas, { id: Date.now(), texto: novaNota }]);
+      setNovaNota('');
+      inputRef.current.focus();
+    }
+  };
+
+  // Remove uma nota pelo ID
+  const removerNota = (id) => {
+    setNotas(notas.filter(nota => nota.id !== id));
+  };
+
+  // Adiciona nota ao pressionar Enter
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      adicionarNota();
+    }
+  };
+
   return (
-    <div>
-      <PerfilUsuario
-        imagem="https://media.discordapp.net/attachments/1222734760288190477/1258485304537518150/IMG-20230410-WA0000.jpg?ex=68360046&is=6834aec6&hm=d7b9b0fddb28d2488af998c7ead4755ce15b91a150377e564004367aefa2bbd4&=&format=webp"
-        nome="Gabriel Gravena"
-        bio="Desenvolvedor."
-      />
+    <div style={styles.container}>
+      <h2 style={styles.titulo}>Bloco de Notas</h2>
+      
+      <div style={styles.inputContainer}>
+        <input
+          ref={inputRef}
+          type="text"
+          value={novaNota}
+          onChange={(e) => setNovaNota(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="Digite uma nova nota..."
+          style={styles.input}
+        />
+        <button onClick={adicionarNota} style={styles.botaoAdicionar}>
+          Adicionar
+        </button>
+      </div>
+
+      <ul style={styles.listaNotas}>
+        {notas.map(nota => (
+          <li key={nota.id} style={styles.itemNota}>
+            <span>{nota.texto}</span>
+            <button 
+              onClick={() => removerNota(nota.id)} 
+              style={styles.botaoRemover}
+            >
+              ×
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default App;
+// Estilos do componente
+const styles = {
+  container: {
+    maxWidth: '500px',
+    margin: '0 auto',
+    padding: '20px',
+    fontFamily: 'Arial, sans-serif',
+    backgroundColor: '#f5f5f5',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+  },
+  titulo: {
+    color: '#333',
+    textAlign: 'center',
+  },
+  inputContainer: {
+    display: 'flex',
+    marginBottom: '20px',
+    gap: '10px',
+  },
+  input: {
+    flex: 1,
+    padding: '10px',
+    fontSize: '16px',
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+  },
+  botaoAdicionar: {
+    padding: '10px 15px',
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  },
+  listaNotas: {
+    listStyle: 'none',
+    padding: 0,
+  },
+  itemNota: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '10px',
+    marginBottom: '8px',
+    backgroundColor: 'white',
+    borderRadius: '4px',
+    boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+  },
+  botaoRemover: {
+    backgroundColor: '#f44336',
+    color: 'white',
+    border: 'none',
+    borderRadius: '50%',
+    width: '25px',
+    height: '25px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+};
+
+export default BlocoNotas;
